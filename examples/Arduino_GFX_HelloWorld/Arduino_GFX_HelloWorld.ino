@@ -52,7 +52,7 @@ void setup()
         touch.setCenterButtonCoordinate(600, 120);  //AMOLED 1.91 inch
         Serial.println("CST816T init success!");
         // Only 1.91 Inch AMOLED board support
-        touch.setHomeButtonCallback([](void *ptr) {
+        touch.TouchDrvCSTXXX::setHomeButtonCallback([](void *ptr) {
             Serial.println("Home key pressed!");
         }, NULL);
     }

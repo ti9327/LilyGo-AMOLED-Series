@@ -334,7 +334,7 @@ void setup()
         xTaskCreate(buttonHandlerTask, "btn", 5 * 1024, NULL, 12, NULL);
     }
 
-    amoled.setHomeButtonCallback([](void *ptr) {
+    amoled.TouchDrvCSTXXX::setHomeButtonCallback([](void *ptr) {
         Serial.println("Home key pressed!");
         static uint32_t checkMs = 0;
         static uint8_t lastBri = 0;

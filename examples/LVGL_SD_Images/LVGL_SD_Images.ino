@@ -150,7 +150,7 @@ void setup()
     }
 
     // Home Button Only 1.91 Inch AMOLED board support ,other board not support
-    amoled.setHomeButtonCallback([](void *ptr) {
+    amoled.TouchDrvCSTXXX::setHomeButtonCallback([](void *ptr) {
         static uint32_t checkMs = 0;
         if (millis() > checkMs) {
             updateImages();

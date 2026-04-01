@@ -127,7 +127,7 @@ void setup()
     //rslt =  amoled.beginAMOLED_191();
 
     // Begin LilyGo  2.41 Inch AMOLED board class
-    //rslt =  amoled.beginAMOLED_241();
+    // rslt =  amoled.beginAMOLED_241();
 
     // Automatically determine the access device
     rslt = amoled.begin();
@@ -148,7 +148,7 @@ void setup()
     lv_obj_add_event_cb(img1, images_event_cb, LV_EVENT_CLICKED, NULL);
 
     // Home Button Only 1.91 Inch AMOLED board support ,other board not support
-    amoled.setHomeButtonCallback([](void *ptr) {
+    amoled.TouchDrvCSTXXX::setHomeButtonCallback([](void *ptr) {
         static uint32_t checkMs = 0;
         if (millis() > checkMs) {
             updateImages();

@@ -156,12 +156,16 @@ void LilyGo_AMOLED::enableTouch()
 
 uint8_t LilyGo_AMOLED::getPoint(int16_t *x, int16_t *y, uint8_t get_point )
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
     uint8_t point = 0;
     if (boards == &BOARD_AMOLED_147) {
-        point =  TouchDrvCHSC5816::getPoint(x, y);
+        point =  TouchDrvCHSC5816::getPoint(x, y, get_point);
     } else if (boards == &BOARD_AMOLED_191 || boards == &BOARD_AMOLED_241 || boards == &BOARD_AMOLED_191_SPI) {
-        point =  TouchDrvCSTXXX::getPoint(x, y);
+        point =  TouchDrvCSTXXX::getPoint(x, y, get_point);
     }
+#pragma GCC diagnostic pop
 
     // Disable touch, just return the touch press touch point Set to 0, does not actually disable touch
     // https://github.com/Xinyuan-LilyGO/LilyGo-AMOLED-Series/issues/70
