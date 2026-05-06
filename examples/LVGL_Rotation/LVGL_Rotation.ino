@@ -21,7 +21,7 @@ uint8_t btnPin = 0;
 AceButton button(btnPin);
 uint8_t rotation = 1;
 
-const char *format_string = "#0000ff X:%d#\n #ff00ff Y:%d#\n #f00f00 Rotation:%d#\n #00ff00 Size:%s# ";
+const char *format_string = "#0000ff X:%d W:%d#\n #ff00ff Y:%d H:%d#\n #f00f00 Rotation:%d#\n #00ff00 Size:%s# ";
 
 void setRotation()
 {
@@ -30,7 +30,10 @@ void setRotation()
     lv_disp_drv_t *drv = lv_disp_get_default()->driver;
     drv->hor_res = amoled.width();
     drv->ver_res = amoled.height();
+    Serial.printf("setRotation %d Width : %d Height : %d\n", amoled.getRotation(), amoled.width(), amoled.height());
     lv_disp_drv_update(lv_disp_get_default(), drv);
+    // Update label
+    lv_label_set_text_fmt(label1, format_string, 0,  amoled.width(), 0, amoled.height(), amoled.getRotation(), amoled.getName());
 }
 
 void handleEvent(AceButton * /* button */, uint8_t eventType,
@@ -102,7 +105,7 @@ void setup(void)
     label1 = lv_label_create(lv_scr_act());
     lv_label_set_long_mode(label1, LV_LABEL_LONG_WRAP);     /*Break the long lines*/
     lv_label_set_recolor(label1, true);                      /*Enable re-coloring by commands in the text*/
-    lv_label_set_text_fmt(label1, format_string, 0, 0, amoled.getRotation(), amoled.getName());
+    lv_label_set_text_fmt(label1, format_string, 0,  amoled.width(), 0, amoled.height(), amoled.getRotation(), amoled.getName());
     lv_obj_set_width(label1, 150);  /*Set smaller width to make the lines wrap*/
     lv_obj_set_style_text_align(label1, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_align(label1, LV_ALIGN_CENTER, 0, -40);
@@ -142,10 +145,12 @@ void setup(void)
 void loop()
 {
     lv_indev_t *indev = lv_indev_get_next(NULL);
-    lv_point_t  point;
-    if ( indev->proc.state == LV_INDEV_STATE_PRESSED ) {
-        lv_indev_get_point(indev, &point);
-        lv_label_set_text_fmt(label1, format_string, point.x, point.y, amoled.getRotation(), amoled.getName());
+    if (indev) {
+        lv_point_t  point;
+        if ( indev->proc.state == LV_INDEV_STATE_PRESSED ) {
+            lv_indev_get_point(indev, &point);
+            lv_label_set_text_fmt(label1, format_string, point.x, amoled.width(), point.y, amoled.height(), amoled.getRotation(), amoled.getName());
+        }
     }
     lv_task_handler();
     button.check();
